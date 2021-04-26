@@ -1,0 +1,32 @@
+# # 3버전은 자동으로 3.0 버전으로 적용. 3점대 최신 버전 사용 X
+# # 특정 버전 명시 없으면 자동으로 '1.0'으로 작동
+# # https://docs.docker.com/compose/compose-file/compose-versioning/
+
+version: '3.9'
+
+# # services 아래에 실행하려는 컨테이너들 정의
+# # compose에서는 container 대신 service 라는 개념을 사용 
+services:
+  # 새로 생성할 docker image 이름 => 소문자로 쓸 것!
+  db:
+    container_name: db
+    build: ./Database
+    ports:
+      - "3306:3306"
+
+  backend:
+    container_name: back
+    build: ./Backend
+    ports:
+      - "8000:8000"
+    # depends_on:
+    #   - db
+    # links:
+    #   - db
+    restart: always
+
+  frontend:
+    container_name: front
+    build: ./Frontend/dockerpjt
+    ports:
+      - "8080:8080"
